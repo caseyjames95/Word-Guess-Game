@@ -1,50 +1,71 @@
+// 1:31:06
+const wordSel = ['Outrun', 'Synthwave', 'DeLorean', 'Miami', 'Beach', 'Sunset', 'Ferrari']
+
+const ranItem = function () {
+    return wordSel[Math.floor(Math.random()*wordSel.length)].toLowerCase()
+}
 
 // Variables
 let winCount = 0
 let lossCount = 0
-let guessCount = 0
-let lguess = 1 + guessCount
-const win = true
-const loss = false
-const maxCount = 9
-const wordSel = ['Outrun', 'Synthwave', 'DeLorean', 'Miami', 'Beach', 'Sunset', 'Ferrari']
+let guessCount = 10
+const lettersGuessed = []
+let word = ranItem()
 
 
-
-// Looks for keystrokes
-document.onkeyup = function (lguess) {
-    message = MessageEvent
-    console.log(lguess)
+const displayWord = function (chosen) {
+    
+    let wordStr = ""
+    let winStatus = true
+    word.split("").forEach(function (letter) {
+        if (letter === chosen || lettersGuessed.indexOf(letter) !== -1 ) {
+            wordStr += `${letter} `
+        } else {
+            wordStr += '- '
+            winStatus = false
+        }
+    })
+    if (winStatus) {
+        alert ('you won')
+        winCount++
+        document.getElementById('win').innerHTML = `
+        <h3>Wins = ${winCount}</h3>
+        `
+    }
+    document.getElementById('gameDisplay').textContent = wordStr
 }
 
 
-// Picks word or letter
-// function ranWord () {
-//     const randomItem = wordSel[Math.floor(Math.random()*wordSel.length)]
-//     console.log(word);
 
-//     return randomItem
-// }
 
-const randomItem = wordSel[Math.floor(Math.random()*wordSel.length)]
-document.getElementById(`gameDisplay`).innerHTML = randomItem
+document.onkeyup = function (event) {
+    if (event.keyCode >= 65 && event.keyCode <= 90) {
+        if (lettersGuessed.indexOf(event.key) === -1) {
+            lettersGuessed.push(event.key)
+            document.getElementById('letters').textContent = lettersGuessed.join(', ')
+            if (word.includes(event.key)) {
+                displayWord(event.key)
+            } else {
+                guessCount--
+                document.getElementById('guess').innerHTML = `
+                <h3>Guesses Left = ${guessCount}</h3>
+                `
+                if (guessCount <= 0) {
+                    lossCount++
+                    document.getElementById('loss').innerHTML = `
+                    <h3>Losses = ${lossCount++}</h3>
+                    `
+                    alert('you lost')
+                }
+            }
+        }
+    }
+}
+
+displayWord()
 
 // Score Board
-document.getElementById('guess').innerHTML = `
-<h3>Guesses = ${guessCount}/9</h3>
-`
-document.getElementById('win').innerHTML = `
-<h3>Wins = ${winCount}</h3>
-`
-document.getElementById('loss').innerHTML = `
-<h3>Losses = ${lossCount}</h3>
-`
 
-// Objects
+
 
 // Game restart
-if (win) {
-
-} else {
-
-}
