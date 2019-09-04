@@ -9,8 +9,15 @@ const ranItem = function () {
 let winCount = 0
 let lossCount = 0
 let guessCount = 10
-const lettersGuessed = []
+let lettersGuessed = []
 let word = ranItem()
+
+
+const resetFun = function () {
+    ranItem()
+    guessCount = 10
+    lettersGuessed = []
+}
 
 
 const displayWord = function (chosen) {
@@ -25,12 +32,15 @@ const displayWord = function (chosen) {
             winStatus = false
         }
     })
+
+
     if (winStatus) {
         alert ('you won')
         winCount++
         document.getElementById('win').innerHTML = `
         <h3>Wins = ${winCount}</h3>
         `
+        resetFun()
     }
     document.getElementById('gameDisplay').textContent = wordStr
 }
@@ -51,21 +61,31 @@ document.onkeyup = function (event) {
                 <h3>Guesses Left = ${guessCount}</h3>
                 `
                 if (guessCount <= 0) {
-                    lossCount++
                     document.getElementById('loss').innerHTML = `
                     <h3>Losses = ${lossCount++}</h3>
                     `
                     alert('you lost')
+                    resetFun()
                 }
             }
         }
     }
 }
 
+// Displays word function at start of game
 displayWord()
 
-// Score Board
 
-
-
-// Game restart
+// Scoreboard | Input so they stay on the screen before game starts
+// Guesses
+document.getElementById('guess').innerHTML = `
+<h3>Guesses Left = ${guessCount}</h3>
+`
+// Wins
+document.getElementById('win').innerHTML = `
+<h3>Wins = ${winCount}</h3>
+`
+// Losses
+document.getElementById('loss').innerHTML = `
+<h3>Losses = ${lossCount++}</h3>
+`
