@@ -1,6 +1,7 @@
-// 1:31:06
+// Array to select word from
 const wordSel = ['Outrun', 'Synthwave', 'DeLorean', 'Miami', 'Beach', 'Sunset', 'Ferrari']
 
+// Function that randomly picks word from array
 const ranItem = function () {
     return wordSel[Math.floor(Math.random()*wordSel.length)].toLowerCase()
 }
@@ -13,13 +14,11 @@ let lettersGuessed = []
 let word = ranItem()
 
 
-const resetFun = function () {
-    ranItem()
-    guessCount = 10
-    lettersGuessed = []
-}
 
-
+// displayWord function allows for multiple steps in the game
+// once word is chosen the script breaks each letter into a value
+// compares key clicks to words letters
+// identifies if word has been completed or out of guesses.
 const displayWord = function (chosen) {
     
     let wordStr = ""
@@ -37,10 +36,13 @@ const displayWord = function (chosen) {
     if (winStatus) {
         alert ('you won')
         winCount++
+        
         document.getElementById('win').innerHTML = `
         <h3>Wins = ${winCount}</h3>
         `
-        resetFun()
+        ranItem()
+        guessCount = 10
+        lettersGuessed = []
     }
     document.getElementById('gameDisplay').textContent = wordStr
 }
@@ -65,7 +67,9 @@ document.onkeyup = function (event) {
                     <h3>Losses = ${lossCount++}</h3>
                     `
                     alert('you lost')
-                    resetFun()
+                    ranItem()
+                    guessCount = 10
+                    lettersGuessed = []
                 }
             }
         }
